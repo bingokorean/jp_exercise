@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本語コース - 单元导航</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #e74c3c;
+            --secondary: #3498db;
+            --accent: #e67e22;
+            --light: #f9f9f9;
+            --dark: #2c3e50;
+            --gray: #ecf0f1;
+            --text: #333;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'Yu Gothic', 'Hiragino Kaku Gothic Pro', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 3rem 0 4rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: -50px auto 50px;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto 15px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 18px;
+            border-radius: 20px;
+            margin: 0 8px;
+            font-size: 1rem;
+        }
+        
+        .units-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .unit-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+        }
+        
+        .unit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+        }
+        
+        .unit-header {
+            background: var(--secondary);
+            color: white;
+            padding: 25px;
+            font-weight: bold;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            min-height: 120px;
+        }
+        
+        .unit-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,0,0,0.1), transparent);
+        }
+        
+        .unit-header i {
+            font-size: 2.5rem;
+            z-index: 1;
+        }
+        
+        .unit-title {
+            z-index: 1;
+        }
+        
+        .unit-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .unit-description {
+            margin-bottom: 25px;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+        
+        .unit-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: var(--accent);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .unit-btn:hover {
+            background: #d35400;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+        }
+        
+        .unit-btn i {
+            margin-left: 8px;
+        }
+        
+        .unit-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 3.5rem;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        
+        .footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 70px;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .course-info {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        
+        .course-info h2 {
+            color: var(--primary);
+            margin-bottom: 25px;
+            font-size: 2rem;
+        }
+        
+        .course-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .stat-card {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .stat-card i {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+        
+        .stat-card h3 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .unit-header {
+                padding: 20px;
+                font-size: 1.3rem;
+            }
+        }
+        
+        /* Animation for unit cards */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .unit-card {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+        
+        .unit-card:nth-child(1) { animation-delay: 0.1s; }
+        .unit-card:nth-child(2) { animation-delay: 0.2s; }
+        .unit-card:nth-child(3) { animation-delay: 0.3s; }
+        .unit-card:nth-child(4) { animation-delay: 0.4s; }
+        .unit-card:nth-child(5) { animation-delay: 0.5s; }
+        .unit-card:nth-child(6) { animation-delay: 0.6s; }
+        .unit-card:nth-child(7) { animation-delay: 0.7s; }
+        .unit-card:nth-child(8) { animation-delay: 0.8s; }
+        .unit-card:nth-child(9) { animation-delay: 0.9s; }
+        .unit-card:nth-child(10) { animation-delay: 1.0s; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-overlay"></div>
+        <div class="container">
+            <h1>日本語コース 单元导航</h1>
+            <p class="subtitle">《新标准日语第一册智慧版》全10单元教学计划</p>
+            <div>
+                <span class="badge"><i class="fas fa-book"></i> 10个教学单元</span>
+                <span class="badge"><i class="fas fa-user-graduate"></i> 大学日语课程</span>
+                <span class="badge"><i class="fas fa-chalkboard-teacher"></i> 资深教师设计</span>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="course-info">
+            <h2><i class="fas fa-graduation-cap"></i> 课程概述</h2>
+            <p>本课程基于《新标准日语第一册智慧版》教材设计，包含10个完整的教学单元。每个单元包含四学时的详细教学计划，涵盖语法讲解、词汇学习、会话练习和文化探索。通过本课程，学生将掌握基础日语会话能力，理解日本文化特点，为日语进阶学习奠定坚实基础。</p>
+            
+            <div class="course-stats">
+                <div class="stat-card">
+                    <i class="fas fa-book-open"></i>
+                    <h3>10</h3>
+                    <p>教学单元</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>40</h3>
+                    <p>学时设计</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-language"></i>
+                    <h3>120+</h3>
+                    <p>语法要点</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-film"></i>
+                    <h3>30+</h3>
+                    <p>文化资源</p>
+                </div>
+            </div>
+        </div>
+        
+        <h2 style="text-align: center; color: var(--dark); margin: 40px 0 30px; font-size: 2rem;">
+            <i class="fas fa-map-signs"></i> 教学单元导航
+        </h2>
+        
+        <div class="units-container">
+            <!-- 单元 1 -->
+            <div class="unit-card">
+                <div class="unit-header">
+                    <i class="fas fa-handshake"></i>
+                    <div class="unit-title">第1单元: 初次见面</div>
+                    <i class="fas fa-comments unit-icon"></i>
+                </div>
+                <div class="unit-content">
+                    <div class="unit-description">
+                        <p>学习自我介绍、问候语和基本寒暄用语。掌握名词谓语句和助词「は」「の」的用法。了解日本初次见面的礼仪文化。</p>
+                        <p><strong>语法重点:</strong> です/ます形、名詞文、助詞「は」「の」</p>
+                    </div>
+                    <a href="unit_1.html" class="unit-btn">
+                        查看教学计划 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 单元 2 -->
+            <div class="unit-card">
+                <div class="unit-header">
+                    <i class="fas fa-home"></i>
+                    <div class="unit-title">第2单元: 我的房间</div>
+                    <i class="fas fa-bed unit-icon"></i>
+                </div>
+                <div class="unit-content">
+                    <div class="unit-description">
+                        <p>学习描述房间物品和位置关系的表达。掌握存在句「あります」「います」和指示代词「これ」「それ」「あれ」「どれ」。</p>
+                        <p><strong>语法重点:</strong> 存在動詞、指示代名詞、位置表現</p>
+                    </div>
+                    <a href="unit_2.html" class="unit-btn">
+                        查看教学计划 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 单元 3 -->
+            <div class="unit-card">
+                <div class="unit-header">
+                    <i class="fas fa-utensils"></i>
+                    <div class="unit-title">第3单元: 日常饮食</div>
+                    <i class="fas fa-ice-cream unit-icon"></i>
+                </div>
+                <div class="unit-content">
+                    <div class="unit-description">
+                        <p>学习食物名称和点餐用语。掌握动词现在时和过去时的肯定、否定形式。了解日本饮食习惯和餐桌礼仪。</p>
+                        <p><strong>语法重点:</strong> 動詞の現在形・過去形、助詞「を」「で」、数量詞</p>
+                    </div>
+                    <a href="unit_3.html" class="unit-btn">
+                        查看教学计划 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 单元 4 -->
+            <div class="unit-card">
+                <div class="unit-header">
+                    <i class="fas fa-shopping-cart"></i>
+                    <div class="unit-title">第4单元: 购物</div>
+                    <i class="fas fa-tags unit-icon"></i>
+                </div>
+                <div class="unit-content">
+                    <div class="unit-description">
+                        <p>学习购物场景中的对话和商品询问方式。掌握形容词用法和比较表达。了解日本购物文化和支付方式。</p>
+                        <p><strong>语法重点:</strong> い形容詞・な形容詞、比較表現、助詞「が」「も」</p>
+                    </div>
+                    <a href="unit_4.html" class="unit-btn">
+                        查看教学计划 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 单元 5 -->
+            <div class="unit-card">
+                <div class="unit-header">
+                    <i class="fas fa-train"></i>
+                    <div class="unit-title">第5单元: 交通出行</div>
+                    <i class="fas fa-map-marked-alt unit-icon"></i>
+                </div>
+                <div class="unit-content">
+                    <div class="unit-description">
+                        <p>学习交通方式、问路和方向表达。掌握移动动词和助词「へ」「に」「で」的用法。了解日本公共交通系统。</p>
+                        <p><strong>语法重点:</strong> 移動動詞、方向助詞、時間表現</p>
+                    </div>
+                    <a href="unit_5.html" class="unit-btn">
+                        查看教学计划 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 单元 6 -->
+            <div class="unit-card">
+                <div class="unit-header" style="background: linear-gradient(135deg, #e74c3c, #e67e22);">
+                    <i class="fas fa-film"></i>
+                    <div class="unit-title">第6单元: 动漫与漫画</div>
+                    <i class="fas fa-dragon unit-icon"></i>
+                </div>
+                <div class="unit-content">
+                    <div class="unit-description">
+                        <p>学习描述喜好和进行比较的表达。掌握形容动词用法和比较句型。了解日本动漫文化发展历史。</p>
+                        <p><strong>语法重点:</strong> 形容動詞、比較表現「より」「ほど」、助詞「とか」</p>
+                    </div>
+                    <a href="unit_6.html" class="unit-btn">
+                        查看教学计划 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 单元 7 -->
+            <div class="unit-card">
+                <div class="unit-header">
+                    <i class="fas fa-briefcase"></i>
+                    <div class="unit-title">第7单元: 工作与职业</div>
+                    <i class="fas fa-user-tie unit-icon"></i>
+                </div>
+                <div class="unit-content">
+                    <div class="unit-description">
+                        <p>学习职业名称和工作场景中的表达。掌握动词て形和接续助词「て」「から」的用法。了解日本职场文化。</p>
+                        <p><strong>语法重点:</strong> 動詞て形、助詞「て」「から」、職業名詞</p>
+                    </div>
+                    <a href="unit_7.html" class="unit-btn">
+                        查看教学计划 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 单元 8 -->
+            <div class="unit-card">
+                <div class="unit-header">
+                    <i class="fas fa-umbrella-beach"></i>
+                    <div class="unit-title">第8单元: 休闲活动</div>
+                    <i class="fas fa-gamepad unit-icon"></i>
+                </div>
+                <div class="unit-content">
+                    <div class="unit-description">
+                        <p>学习兴趣爱好和休闲活动的表达。掌握动词辞書形和「ことができます」句型。了解日本休闲文化。</p>
+                        <p><strong>语法重点:</strong> 動詞辞書形、可能表現、助詞「か」</p>
+                    </div>
+                    <a href="unit_8.html" class="unit-btn">
+                        查看教学计划 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 单元 9 -->
+            <div class="unit-card">
+                <div class="unit-header">
+                    <i class="fas fa-heart"></i>
+                    <div class="unit-title">第9单元: 健康与医疗</div>
+                    <i class="fas fa-heartbeat unit-icon"></i>
+                </div>
+                <div class="unit-content">
+                    <div class="unit-description">
+                        <p>学习身体部位和健康相关的表达。掌握动词ない形和禁止表达。了解日本医疗系统和健康观念。</p>
+                        <p><strong>语法重点:</strong> 動詞ない形、禁止表現「てはいけません」、助詞「が」</p>
+                    </div>
+                    <a href="unit_9.html" class="unit-btn">
+                        查看教学计划 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 单元 10 -->
+            <div class="unit-card">
+                <div class="unit-header">
+                    <i class="fas fa-plane"></i>
+                    <div class="unit-title">第10单元: 旅行计划</div>
+                    <i class="fas fa-mountain unit-icon"></i>
+                </div>
+                <div class="unit-content">
+                    <div class="unit-description">
+                        <p>学习旅行计划和景点介绍的表达。掌握动词意向形和「つもりです」「予定です」句型。了解日本旅游文化。</p>
+                        <p><strong>语法重点:</strong> 動詞意向形、計画表現、助詞「で」「に」</p>
+                    </div>
+                    <a href="unit_10.html" class="unit-btn">
+                        查看教学计划 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="container">
+            <p>日本語教育用教材解析 &copy; 2023 - 资深日语教师教学方案</p>
+            <p>基于《新标准日语第一册智慧版》设计 | 大学初级日语课程</p>
+        </div>
+    </div>
+    
+    <script>
+        // 添加按钮悬停动画
+        document.querySelectorAll('.unit-btn').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px)';
+                this.style.boxShadow = '0 6px 12px rgba(0,0,0,0.2)';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+            });
+        });
+        
+        // 添加卡片点击效果
+        document.querySelectorAll('.unit-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (!e.target.closest('.unit-btn')) {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
+                }
+            });
+        });
+        
+        // 添加页面加载动画
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                document.body.style.opacity = 1;
+            }, 100);
+        });
+        
+        document.body.style.opacity = 0;
+        document.body.style.transition = 'opacity 0.8s ease';
+    </script>
+</body>
+</html>
